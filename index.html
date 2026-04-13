@@ -1,69 +1,159 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <script src="script.js"></script>
-  </head>
-  <body></body>
-</html>
-<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Damians Download-Rechner</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Damians Download-Check</title>
+    
     <style>
-        /* Ein bisschen Styling, damit es gut aussieht */
-        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background-color: #f0f2f5; }
-        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 300px; }
-        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        button:hover { background-color: #0056b3; }
-        #ergebnis { margin-top: 20px; font-weight: bold; color: #333; text-align: center; }
+        /* Grund-Design (PC & Tablet) */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #1e1e1e;
+            border: 2px solid #00ff88;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #00ff88;
+            margin-bottom: 30px;
+            font-size: 1.8rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+
+        /* inputmode="decimal" öffnet am Handy direkt die Zahlen */
+        input {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            background-color: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 10px;
+            color: white;
+            font-size: 1.1rem;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #00ff88;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #00ff88;
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s, background-color 0.2s;
+            margin-top: 10px;
+        }
+
+        button:active {
+            transform: scale(0.95);
+            background-color: #00cc6e;
+        }
+
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #2a2a2a;
+            border-radius: 10px;
+            min-height: 50px;
+            line-height: 1.5;
+        }
+
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        /* HANDY-ANPASSUNGEN (Mobile) */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+                border-width: 1px;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            body {
+                align-items: flex-start; /* Schiebt die Box am Handy etwas weiter nach oben */
+                padding-top: 40px;
+            }
+        }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Download-Rechner</h2>
-    
-    <label>Speed (Mbit/s):</label>
-    <input type="number" id="speedInput" placeholder="z.B. 100">
-    
-    <label>Größe (GB):</label>
-    <input type="number" id="sizeInput" placeholder="z.B. 5">
-    
-    <button onclick="berechnen()">Berechnen</button>
+    <div class="container">
+        <h1>Download-Check</h1>
+        
+        <div class="input-group">
+            <label>Dateigröße (in GB):</label>
+            <input type="number" id="size" placeholder="z.B. 50" inputmode="decimal">
+        </div>
 
-    <div id="ergebnis"></div>
-</div>
+        <div class="input-group">
+            <label>Leitung (in Mbit/s):</label>
+            <input type="number" id="speed" placeholder="z.B. 100" inputmode="decimal">
+        </div>
 
-<script>
-    // Das ist dein Script, leicht angepasst für HTML
-    function berechnen() {
-        // Werte aus den Feldern auslesen
-        let downloadspeed = Number(document.getElementById('speedInput').value);
-        let größe = Number(document.getElementById('sizeInput').value);
-        let ausgabe = document.getElementById('ergebnis');
+        <button onclick="calculate()">Berechnen</button>
 
-        // Fehler-Checks
-        if (downloadspeed <= 0 || größe <= 0) {
-            ausgabe.style.color = "red";
-            ausgabe.innerText = "Bitte gültige Zahlen eingeben!";
-            return;
-        }
+        <div id="result">
+            Hier erscheint dein Ergebnis...
+        </div>
+        
+        <p style="font-size: 0.7rem; color: #555; margin-top: 20px;">
+            &copy; 2026 DAMAIN-Studios | Apache License 2.0
+        </p>
+    </div>
 
-        // Deine Logik
-        let speedMB = downloadspeed / 8;
-        let größeMB = größe * 1024;
-        let zeit = größeMB / speedMB;
+    <script>
+        function calculate() {
+            const sizeGB = document.getElementById('size').value;
+            const speedMbit = document.getElementById('speed').value;
+            const resultDiv = document.getElementById('result');
 
-        ausgabe.style.color = "#333";
-        if (zeit > 60) {
-            ausgabe.innerText = "Dauer: " + (zeit / 60).toFixed(1) + " Minuten";
-        } else {
-            ausgabe.innerText = "Dauer: " + zeit.toFixed(2) + " Sekunden";
-        }
-    }
-</script>
+            if (sizeGB > 0 && speedMbit > 0) {
+                // Umrechnung: GB zu MB (x1024), dann zu Mbit (x8)
+                // Dann durch Geschwindigkeit teilen = Sekunden
+                const speedMB = speedMbit / 8;
+                const totalSeconds = (sizeGB * 1024) / speedMB;
 
-</body>
-</html>
+                let timeText = "";
+
+                if (totalSeconds < 60) {
+                    timeText = `<span class="highlight">${Math.round(totalSeconds)} Sekunden</span>`;
