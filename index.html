@@ -4,156 +4,113 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🚀 Damians Download-Check</title>
-    
     <style>
-        /* Grund-Design (PC & Tablet) */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #121212;
-            color: #ffffff;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            padding: 20px;
-        }
-
-        .container {
-            background-color: #1e1e1e;
-            border: 2px solid #00ff88;
-            border-radius: 20px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+            font-family: sans-serif;
+            background-color: #1a1a1a;
+            color: white;
             text-align: center;
-            max-width: 400px;
-            width: 100%;
+            padding: 20px;
+            margin: 0;
         }
 
-        h1 {
-            color: #00ff88;
-            margin-bottom: 30px;
-            font-size: 1.8rem;
+        /* Die Box ist am PC kompakt, am Handy füllt sie die Breite */
+        .container {
+            background-color: #2a2a2a;
+            border: 3px solid #00ff00;
+            border-radius: 15px;
+            padding: 30px;
+            display: inline-block;
+            max-width: 500px;
+            width: 90%; /* Wichtig für Handy! */
+            margin-top: 50px;
+            box-sizing: border-box;
         }
 
-        .input-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
+        h1 { color: #00ff00; font-size: 2rem; }
 
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #aaaaaa;
-            font-size: 0.9rem;
-        }
-
-        /* inputmode="decimal" öffnet am Handy direkt die Zahlen */
         input {
             width: 100%;
-            padding: 12px;
-            box-sizing: border-box;
-            background-color: #2a2a2a;
-            border: 1px solid #444;
+            padding: 15px;
+            margin: 15px 0;
             border-radius: 10px;
-            color: white;
-            font-size: 1.1rem;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #00ff88;
+            border: none;
+            font-size: 1.2rem; /* Schön groß für Finger */
+            box-sizing: border-box;
         }
 
         button {
             width: 100%;
-            padding: 15px;
-            background-color: #00ff88;
-            color: #000;
+            padding: 20px;
+            background-color: #00ff00;
+            color: black;
             border: none;
             border-radius: 10px;
-            font-size: 1.1rem;
+            font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            transition: transform 0.2s, background-color 0.2s;
-            margin-top: 10px;
         }
 
-        button:active {
-            transform: scale(0.95);
-            background-color: #00cc6e;
-        }
+        button:active { background-color: #00cc00; }
 
         #result {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: #2a2a2a;
-            border-radius: 10px;
-            min-height: 50px;
-            line-height: 1.5;
-        }
-
-        .highlight {
-            color: #00ff88;
-            font-weight: bold;
+            margin-top: 25px;
             font-size: 1.2rem;
-        }
-
-        /* HANDY-ANPASSUNGEN (Mobile) */
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px;
-                border-width: 1px;
-            }
-            h1 {
-                font-size: 1.5rem;
-            }
-            body {
-                align-items: flex-start; /* Schiebt die Box am Handy etwas weiter nach oben */
-                padding-top: 40px;
-            }
+            min-height: 50px;
+            background: #333;
+            padding: 15px;
+            border-radius: 10px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Download-Check</h1>
+        <h1>Download Rechner</h1>
         
-        <div class="input-group">
-            <label>Dateigröße (in GB):</label>
-            <input type="number" id="size" placeholder="z.B. 50" inputmode="decimal">
-        </div>
-
-        <div class="input-group">
-            <label>Leitung (in Mbit/s):</label>
-            <input type="number" id="speed" placeholder="z.B. 100" inputmode="decimal">
-        </div>
-
-        <button onclick="calculate()">Berechnen</button>
-
-        <div id="result">
-            Hier erscheint dein Ergebnis...
-        </div>
+        <p>Dateigröße (GB):</p>
+        <input type="number" id="gbInput" placeholder="z.B. 50">
         
-        <p style="font-size: 0.7rem; color: #555; margin-top: 20px;">
-            &copy; 2026 DAMAIN-Studios | Apache License 2.0
+        <p>Leitung (Mbit/s):</p>
+        <input type="number" id="mbitInput" placeholder="z.B. 100">
+        
+        <br><br>
+        <button onclick="startCalc()">BERECHNEN</button>
+
+        <div id="result">Ergebnis erscheint hier...</div>
+
+        <p style="font-size: 0.8rem; margin-top: 30px; color: #777;">
+            &copy; 2026 DAMAIN-Studios | Apache 2.0
         </p>
     </div>
 
     <script>
-        function calculate() {
-            const sizeGB = document.getElementById('size').value;
-            const speedMbit = document.getElementById('speed').value;
-            const resultDiv = document.getElementById('result');
+        function startCalc() {
+            // Wir holen die Werte direkt aus den Feldern
+            const gb = document.getElementById('gbInput').value;
+            const mbit = document.getElementById('mbitInput').value;
+            const ausgabe = document.getElementById('result');
 
-            if (sizeGB > 0 && speedMbit > 0) {
-                // Umrechnung: GB zu MB (x1024), dann zu Mbit (x8)
-                // Dann durch Geschwindigkeit teilen = Sekunden
-                const speedMB = speedMbit / 8;
-                const totalSeconds = (sizeGB * 1024) / speedMB;
+            if (gb > 0 && mbit > 0) {
+                // Rechnung
+                const mbyteProSek = mbit / 8;
+                const gesamtMB = gb * 1024;
+                const sekunden = gesamtMB / mbyteProSek;
 
-                let timeText = "";
-
-                if (totalSeconds < 60) {
-                    timeText = `<span class="highlight">${Math.round(totalSeconds)} Sekunden</span>`;
+                if (sekunden < 60) {
+                    ausgabe.innerHTML = "Dauer: <b>" + Math.round(sekunden) + " Sekunden</b>";
+                } else if (sekunden < 3600) {
+                    const min = Math.floor(sekunden / 60);
+                    ausgabe.innerHTML = "Dauer: <b>" + min + " Minute(n)</b>";
+                } else {
+                    const std = Math.floor(sekunden / 3600);
+                    const restMin = Math.round((sekunden % 3600) / 60);
+                    ausgabe.innerHTML = "Dauer: <b>" + std + " Std. und " + restMin + " Min.</b>";
+                }
+            } else {
+                ausgabe.innerHTML = "Bitte Zahlen eingeben! ❌";
+            }
+        }
+    </script>
+</body>
+</html>
