@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="script.js"></script>
+  </head>
+  <body></body>
+</html>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Damians Download-Rechner</title>
+    <style>
+        /* Ein bisschen Styling, damit es gut aussieht */
+        body { font-family: sans-serif; display: flex; justify-content: center; padding: 50px; background-color: #f0f2f5; }
+        .card { background: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 300px; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background-color: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+        #ergebnis { margin-top: 20px; font-weight: bold; color: #333; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Download-Rechner</h2>
+    
+    <label>Speed (Mbit/s):</label>
+    <input type="number" id="speedInput" placeholder="z.B. 100">
+    
+    <label>Größe (GB):</label>
+    <input type="number" id="sizeInput" placeholder="z.B. 5">
+    
+    <button onclick="berechnen()">Berechnen</button>
+
+    <div id="ergebnis"></div>
+</div>
+
+<script>
+    // Das ist dein Script, leicht angepasst für HTML
+    function berechnen() {
+        // Werte aus den Feldern auslesen
+        let downloadspeed = Number(document.getElementById('speedInput').value);
+        let größe = Number(document.getElementById('sizeInput').value);
+        let ausgabe = document.getElementById('ergebnis');
+
+        // Fehler-Checks
+        if (downloadspeed <= 0 || größe <= 0) {
+            ausgabe.style.color = "red";
+            ausgabe.innerText = "Bitte gültige Zahlen eingeben!";
+            return;
+        }
+
+        // Deine Logik
+        let speedMB = downloadspeed / 8;
+        let größeMB = größe * 1024;
+        let zeit = größeMB / speedMB;
+
+        ausgabe.style.color = "#333";
+        if (zeit > 60) {
+            ausgabe.innerText = "Dauer: " + (zeit / 60).toFixed(1) + " Minuten";
+        } else {
+            ausgabe.innerText = "Dauer: " + zeit.toFixed(2) + " Sekunden";
+        }
+    }
+</script>
+
+</body>
+</html>
