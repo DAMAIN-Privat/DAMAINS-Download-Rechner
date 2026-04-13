@@ -16,97 +16,96 @@
 
         .container {
             background-color: #2a2a2a;
-            border: 3px solid #0f0;
+            border: 3px solid #00ff00;
             border-radius: 15px;
             padding: 30px;
             display: inline-block;
             max-width: 500px;
-            width: 95%; 
-            margin-top: 30px;
+            width: 90%; 
+            margin-top: 50px;
             box-sizing: border-box;
         }
 
-        h1 { color: #0f0; font-size: 2.2rem; margin-bottom: 20px; }
-
-        p { font-size: 1.2rem; margin-bottom: 5px; text-align: left; margin-left: 5%; color: #0f0; }
+        h1 { color: #00ff00; font-size: 2rem; }
 
         input {
-            width: 90%;
-            padding: 20px;
-            margin: 10px 0 25px 0;
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
             border-radius: 10px;
             border: none;
-            font-size: 1.5rem; 
+            font-size: 1.2rem; 
             box-sizing: border-box;
         }
 
         button {
-            width: 90%;
-            padding: 25px;
-            background-color: #0f0;
+            width: 100%;
+            padding: 20px;
+            background-color: #00ff00;
             color: black;
             border: none;
             border-radius: 10px;
-            font-size: 1.8rem;
+            font-size: 1.3rem;
             font-weight: bold;
             cursor: pointer;
-            text-transform: uppercase;
         }
 
-        button:active { background-color: #0c0; }
+        button:active { background-color: #00cc00; }
 
         #result {
-            margin-top: 30px;
-            font-size: 1.5rem;
-            min-height: 60px;
+            margin-top: 25px;
+            font-size: 1.2rem;
+            min-height: 50px;
             background: #333;
-            padding: 20px;
+            padding: 15px;
             border-radius: 10px;
-            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>DOWNLOAD CALC</h1>
+        <h1>Download Rechner</h1>
         
-        <p>Dateigröße (GB):</p>
+        <p style="text-align: left; margin-left: 5%;">Dateigröße (GB):</p>
         <input type="number" id="gbInput" placeholder="z.B. 50">
         
-        <p>Downloadspeed (Mbit/s):</p>
+        <p style="text-align: left; margin-left: 5%;">Downloadspeed (Mbit/s):</p>
         <input type="number" id="mbitInput" placeholder="z.B. 100">
         
+        <br><br>
         <button onclick="calculate()">BERECHNEN</button>
 
-        <div id="result">Ergebnis folgt...</div>
+        <div id="result">Ergebnis erscheint hier...</div>
 
-        <p style="font-size: 0.8rem; text-align: center; margin-top: 40px; color: #777;">
+        <p style="font-size: 0.8rem; margin-top: 30px; color: #777;">
             &copy; 2026 DAMAIN-Studios | v1.0.0
         </p>
     </div>
 
     <script>
         function calculate() {
-            const g = document.getElementById('gbInput').value;
-            const m = document.getElementById('mbitInput').value;
-            const res = document.getElementById('result');
+            const gb = document.getElementById('gbInput').value;
+            const mbit = document.getElementById('mbitInput').value;
+            const ausgabe = document.getElementById('result');
 
-            if (g > 0 && m > 0) {
-                const sek = (g * 1024) / (m / 8);
-                
-                if (sek < 60) {
-                    res.innerHTML = "Dauer: " + Math.round(sek) + " Sekunden";
-                } else if (sek < 3600) {
-                    const min = Math.round(sek / 60);
-                    res.innerHTML = "Dauer: " + min + " Minute(n)";
+            if (gb > 0 && mbit > 0) {
+                const mbyteProSek = mbit / 8;
+                const gesamtMB = gb * 1024;
+                const sekunden = gesamtMB / mbyteProSek;
+
+                if (sekunden < 60) {
+                    ausgabe.innerHTML = "Dauer: <b>" + Math.round(sekunden) + " Sekunden</b>";
+                } else if (sekunden < 3600) {
+                    const min = Math.floor(sekunden / 60);
+                    ausgabe.innerHTML = "Dauer: <b>" + min + " Minute(n)</b>";
                 } else {
-                    const h = Math.floor(sek / 3600);
-                    const restMin = Math.round((sek % 3600) / 60);
-                    res.innerHTML = "Dauer: " + h + " Std. und " + restMin + " Min.";
+                    const std = Math.floor(sekunden / 3600);
+                    const restMin = Math.round((sekunden % 3600) / 60);
+                    ausgabe.innerHTML = "Dauer: <b>" + std + " Std. und " + restMin + " Min.</b>";
                 }
             } else {
-                res.innerHTML = "Bitte Zahlen eingeben! ❌";
+                ausgabe.innerHTML = "Bitte Zahlen eingeben! ❌";
             }
         }
     </script>
