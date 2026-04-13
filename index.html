@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damians Rechner</title>
+    <title>Damians Rechner - v1.0.0</title>
     <style>
         body { 
             background-color: #111; 
             color: #0f0; 
-            font-family: sans-serif; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -23,19 +23,38 @@
             width: 90%; 
             max-width: 450px; 
             text-align: center; 
-            box-shadow: 0 0 20px rgba(0, 255, 0, 0.2); 
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); 
         }
-        h1 { font-size: 2rem; margin-bottom: 20px; }
+        h1 { 
+            font-size: 2rem; 
+            margin-bottom: 25px; 
+            letter-spacing: 2px;
+        }
+        .input-wrapper {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            color: #0f0;
+        }
         input { 
             width: 100%; 
             padding: 15px; 
-            margin: 10px 0; 
             font-size: 1.4rem; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             border: 1px solid #444; 
             background: #000; 
             color: #0f0; 
             box-sizing: border-box; 
+            outline: none;
+        }
+        input:focus {
+            border-color: #0f0;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
         }
         button { 
             width: 100%; 
@@ -45,18 +64,31 @@
             font-size: 1.6rem; 
             font-weight: bold; 
             border: none; 
-            border-radius: 10px; 
+            border-radius: 12px; 
             cursor: pointer; 
-            margin-top: 20px; 
+            margin-top: 10px; 
+            text-transform: uppercase;
         }
-        button:active { background: #0c0; transform: scale(0.98); }
+        button:active { 
+            background: #0c0; 
+            transform: scale(0.97); 
+        }
         #ausgabe { 
-            margin-top: 30px; 
-            font-size: 1.4rem; 
-            min-height: 40px; 
-            padding: 10px;
+            margin-top: 25px; 
+            font-size: 1.3rem; 
+            min-height: 50px; 
+            padding: 15px;
             background: #333;
-            border-radius: 10px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.4;
+        }
+        .footer {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: #555;
         }
     </style>
 </head>
@@ -65,37 +97,34 @@
 <div class="box">
     <h1>DOWNLOAD CALC</h1>
     
-    <input type="number" id="gbInput" placeholder="GB (z.B. 50)">
-    <input type="number" id="mbitInput" placeholder="Mbit/s (z.B. 100)">
+    <div class="input-wrapper">
+        <label>Dateigröße (in GB):</label>
+        <input type="number" id="gbInput" placeholder="z.B. 50" inputmode="decimal">
+    </div>
+
+    <div class="input-wrapper">
+        <label>Downloadspeed (in Mbit/s):</label>
+        <input type="number" id="mbitInput" placeholder="z.B. 100" inputmode="decimal">
+    </div>
     
-    <button onclick="calculate()">BERECHNEN</button>
+    <button onclick="calculate()">Berechnen</button>
     
     <div id="ausgabe">Ergebnis folgt...</div>
+
+    <div class="footer">
+        &copy; 2026 DAMAIN-Studios | Apache License 2.0 | v1.0.0
+    </div>
 </div>
 
 <script>
-    // Die Funktion MUSS exakt so heißen wie oben im Button
     function calculate() {
         var g = document.getElementById('gbInput').value;
         var m = document.getElementById('mbitInput').value;
         var res = document.getElementById('ausgabe');
 
         if (g > 0 && m > 0) {
+            // Berechnung: (GB * 1024) / (Mbit / 8)
             var sek = (g * 1024) / (m / 8);
-            var min = Math.round(sek / 60);
             
-            if (min >= 60) {
-                var h = Math.floor(min / 60);
-                var mRest = min % 60;
-                res.innerHTML = "Dauer: <b>" + h + " Std. " + mRest + " Min.</b>";
-            } else {
-                res.innerHTML = "Dauer: <b>" + min + " Min.</b>";
-            }
-        } else {
-            res.innerHTML = "Zahlen eingeben! ❌";
-        }
-    }
-</script>
-
-</body>
-</html>
+            if (sek < 60) {
+                res.innerHTML = "Dauer: <b style='color:#0f0'>"
