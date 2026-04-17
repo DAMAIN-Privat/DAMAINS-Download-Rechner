@@ -3,111 +3,169 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Damians Rechner</title>
+    <title>DAMAIN Studios - v4.0 BETA</title>
     <style>
+        :root { --main-color: #0f0; }
+
         body {
-            font-family: sans-serif;
-            background-color: #1a1a1a;
-            color: white;
-            text-align: center;
-            padding: 20px;
+            background-color: #0a0a0a;
+            color: var(--main-color);
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
             margin: 0;
         }
 
         .container {
-            background-color: #2a2a2a;
-            border: 3px solid #00ff00;
-            border-radius: 15px;
+            background-color: #111;
             padding: 30px;
-            display: inline-block;
-            max-width: 500px;
-            width: 90%; 
-            margin-top: 50px;
-            box-sizing: border-box;
+            border: 2px solid var(--main-color);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.1);
+            width: 90%;
+            max-width: 380px;
+            position: relative;
+            text-align: center;
         }
 
-        h1 { color: #00ff00; font-size: 2rem; }
+        .settings-icon {
+            position: absolute; top: 15px; right: 15px;
+            cursor: pointer; font-size: 1.5rem; opacity: 0.6; transition: 0.3s;
+            user-select: none;
+        }
+        .settings-icon:hover { transform: rotate(90deg); opacity: 1; }
+        
+        #colorMenu {
+            display: none; margin-bottom: 20px; padding: 15px;
+            border: 1px solid var(--main-color); border-radius: 8px; background: #151515;
+        }
+
+        .color-btn {
+            width: 25px; height: 25px; border-radius: 50%; border: 2px solid #fff; 
+            cursor: pointer; margin: 0 5px; transition: 0.2s;
+        }
+        .color-btn:hover { transform: scale(1.1); }
+
+        h1 { font-size: 1.6rem; text-shadow: 0 0 10px var(--main-color); margin-bottom: 5px; }
+        .version { font-size: 0.7rem; opacity: 0.5; letter-spacing: 2px; margin-bottom: 30px; }
+
+        label { display: block; margin-top: 15px; font-size: 0.85rem; opacity: 0.8; }
 
         input {
-            width: 100%;
-            padding: 15px;
-            margin: 15px 0;
-            border-radius: 10px;
-            border: none;
-            font-size: 1.2rem; 
-            box-sizing: border-box;
+            width: 85%; padding: 12px; margin: 8px 0;
+            background: #000; border: 1px solid var(--main-color);
+            color: var(--main-color); text-align: center; border-radius: 5px; font-size: 1rem;
+            outline: none; transition: 0.3s;
+        }
+        input:focus { box-shadow: 0 0 10px var(--main-color); }
+
+        .speed-hint {
+            display: block; font-size: 0.75rem; margin-bottom: 20px;
+            text-decoration: none; color: var(--main-color); opacity: 0.7;
+        }
+        .speed-hint:hover { opacity: 1; text-decoration: underline; }
+
+        #result-box {
+            margin-top: 20px; padding: 20px;
+            border-top: 1px dashed var(--main-color);
+            background: rgba(0,255,0,0.02);
+            min-height: 60px;
         }
 
-        button {
-            width: 100%;
-            padding: 20px;
-            background-color: #00ff00;
-            color: black;
-            border: none;
-            border-radius: 10px;
-            font-size: 1.3rem;
-            font-weight: bold;
-            cursor: pointer;
-        }
+        .time-main { font-size: 1.4rem; font-weight: bold; display: block; }
+        .eta { font-size: 0.9rem; opacity: 0.9; margin-top: 8px; color: #fff; }
 
-        button:active { background-color: #00cc00; }
-
-        #result {
-            margin-top: 25px;
-            font-size: 1.2rem;
-            min-height: 50px;
-            background: #333;
-            padding: 15px;
-            border-radius: 10px;
-        }
+        footer { margin-top: 40px; font-size: 0.7rem; border-top: 1px solid #222; padding-top: 15px; }
+        footer a { color: var(--main-color); text-decoration: none; opacity: 0.6; }
+        footer a:hover { opacity: 1; }
     </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>Download Rechner</h1>
-        
-        <p style="text-align: left; margin-left: 5%;">Dateigröße (GB):</p>
-        <input type="number" id="gbInput" placeholder="z.B. 50">
-        
-        <p style="text-align: left; margin-left: 5%;">Downloadspeed (Mbit/s):</p>
-        <input type="number" id="mbitInput" placeholder="z.B. 100">
-        
-        <br><br>
-        <button onclick="calculate()">BERECHNEN</button>
+<div class="container">
+    <div class="settings-icon" onclick="toggleMenu()">⚙️</div>
+    
+    <h1>DAMAIN STUDIOS</h1>
+    <div class="version">DOWNLOAD RECHNER v4.0 BETA</div>
 
-        <div id="result">Ergebnis erscheint hier...</div>
-
-        <p style="font-size: 0.8rem; margin-top: 30px; color: #777;">
-            &copy; 2026 DAMAIN-Studios | version: 3.3
-        </p>
+    <div id="colorMenu">
+        <button class="color-btn" style="background:#0f0;" onclick="changeColor('#0f0')"></button>
+        <button class="color-btn" style="background:#00ccff;" onclick="changeColor('#00ccff')"></button>
+        <button class="color-btn" style="background:#ff3333;" onclick="changeColor('#ff3333')"></button>
+        <button class="color-btn" style="background:#ffb800;" onclick="changeColor('#ffb800')"></button>
     </div>
 
-    <script>
-        function calculate() {
-            const gb = document.getElementById('gbInput').value;
-            const mbit = document.getElementById('mbitInput').value;
-            const ausgabe = document.getElementById('result');
+    <label>Dateigröße (GB):</label>
+    <input type="number" id="gbInput" placeholder="z.B. 50" oninput="berechne()">
+    
+    <label>Leitung (Mbit/s):</label>
+    <input type="number" id="mbitInput" placeholder="z.B. 100" oninput="berechne()">
+    
+    <a href="https://fast.com" target="_blank" class="speed-hint">Speed-Check hier ⚡</a>
 
-            if (gb > 0 && mbit > 0) {
-                const mbyteProSek = mbit / 8;
-                const gesamtMB = gb * 1024;
-                const sekunden = gesamtMB / mbyteProSek;
+    <div id="result-box">
+        <span class="time-main" id="duration">---</span>
+        <div class="eta" id="eta">Warte auf Eingabe...</div>
+    </div>
 
-                if (sekunden < 60) {
-                    ausgabe.innerHTML = "Dauer: <b>" + Math.round(sekunden) + " Sekunden</b>";
-                } else if (sekunden < 3600) {
-                    const min = Math.floor(sekunden / 60);
-                    ausgabe.innerHTML = "Dauer: <b>" + min + " Minute(n)</b>";
-                } else {
-                    const std = Math.floor(sekunden / 3600);
-                    const restMin = Math.round((sekunden % 3600) / 60);
-                    ausgabe.innerHTML = "Dauer: <b>" + std + " Std. und " + restMin + " Min.</b>";
-                }
-            } else {
-                ausgabe.innerHTML = "Bitte Zahlen eingeben! ❌";
-            }
+    <footer>
+        <a href="impressum.html">Impressum & Datenschutz</a>
+    </footer>
+</div>
+
+<script>
+    window.onload = () => {
+        const savedColor = localStorage.getItem('damainColor');
+        if (savedColor) changeColor(savedColor);
+    }
+
+    function toggleMenu() {
+        const menu = document.getElementById('colorMenu');
+        menu.style.display = (menu.style.display === "block") ? "none" : "block";
+    }
+
+    function changeColor(newColor) {
+        document.documentElement.style.setProperty('--main-color', newColor);
+        localStorage.setItem('damainColor', newColor);
+    }
+
+    function formatTime(totalSeconds) {
+        if (totalSeconds === Infinity || isNaN(totalSeconds)) return "---";
+        const h = Math.floor(totalSeconds / 3600);
+        const m = Math.floor((totalSeconds % 3600) / 60);
+        const s = Math.floor(totalSeconds % 60);
+        let res = "";
+        if (h > 0) res += h + "h ";
+        if (m > 0 || h > 0) res += m + "m ";
+        res += s + "s";
+        return res;
+    }
+
+    function berechne() {
+        const gb = parseFloat(document.getElementById('gbInput').value);
+        const mbit = parseFloat(document.getElementById('mbitInput').value);
+        
+        const durEl = document.getElementById('duration');
+        const etaEl = document.getElementById('eta');
+
+        if (gb > 0 && mbit > 0) {
+            const totalSec = (gb * 1024 * 8) / mbit;
+            
+            durEl.innerText = "Dauer: " + formatTime(totalSec);
+
+            const now = new Date();
+            const finishDate = new Date(now.getTime() + totalSec * 1000);
+            const timeStr = finishDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            etaEl.innerHTML = `Fertig um ca. <strong>${timeStr} Uhr</strong>`;
+
+        } else {
+            durEl.innerText = "---";
+            etaEl.innerText = "Warte auf Eingabe...";
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
